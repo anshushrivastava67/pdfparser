@@ -3,5 +3,5 @@ numpy
 pandas
 pydeck
 streamlit
-spacy
-pdfminer3.layout
+spacy==3.7.2
+pdfminer3==2018.12.3.0
