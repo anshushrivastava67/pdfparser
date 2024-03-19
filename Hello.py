@@ -43,15 +43,14 @@ def run():
         st.sidebar.success("Select a demo above.")
         def pdf_reader(file):
                 resource_manager = PDFResourceManager()
-                string_io = io.BytesIO(file)
+                string_io = io.BytesIO()
                 converter = TextConverter(resource_manager, string_io, laparams=LAParams())
                 page_interpreter = PDFPageInterpreter(resource_manager, converter)
-
-                text = ""
-                for page in PDFPage.get_pages(string_io, caching=True, check_extractable=True):
+        
+                for page in PDFPage.get_pages(io.BytesIO(file), caching=True, check_extractable=True):
                         page_interpreter.process_page(page)
-                        text += converter.get_text()
-
+        
+                text = string_io.getvalue()
                 converter.close()
                 string_io.close()
                 return text
