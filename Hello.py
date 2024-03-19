@@ -21,7 +21,11 @@ from pdfminer3.pdfinterp import PDFResourceManager
 from pdfminer3.pdfinterp import PDFPageInterpreter
 from pdfminer3.converter import TextConverter
 import io
-
+try:
+        spacy.cli.download("en_core_web_md")
+        print("Language model downloaded successfully.")
+    except Exception as e:
+        print(f"Error downloading language model: {e}")
 nlp = spacy.load('en_core_web_md')
 
 LOGGER = get_logger(__name__)
