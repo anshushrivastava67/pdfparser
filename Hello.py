@@ -62,6 +62,7 @@ def run():
         job_description_file = st.file_uploader("Upload Job Description PDF", type=["pdf"])
         
         resume_files = st.file_uploader("Upload Resume PDFs", type=["pdf"], accept_multiple_files=True)
+        print(resume_files,len(resume_files))
         similarities={}
         
         a=pdf_reader(resume_files)
