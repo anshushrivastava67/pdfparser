@@ -28,17 +28,18 @@ def run():
     resume_files = st.file_uploader("Upload Resume PDFs", type=["pdf"], accept_multiple_files=True)
 
     if job_description_file and resume_files:
-        job_description_text = job_description_file.read().decode('utf-8')
-        doc1 = nlp(job_description_text)
+        job_description_bytes = job_description_file.read()
+        doc1 = nlp(job_description_bytes)
 
         similarities = {}
         for resume_file in resume_files:
-            resume_text = resume_file.read().decode('utf-8')
-            doc2 = nlp(resume_text)
+            resume_bytes = resume_file.read()
+            doc2 = nlp(resume_bytes)
             similarity = doc1.similarity(doc2)
             similarities[resume_file.name] = similarity
 
-            html = f'<html><head><style>.match-score{{font-size:24px;font-weight:bold;color:#488f31;}}.content{{padding:20px;}}</style></head><div class="content"><div><h4><b>Resume:</b> {resume_file.name}</h4></div><p>{resume_text[:500]}...</p><div class="match-score">Match Score: {int(similarity*100)}%</div></div></html>'
+            resume_text = doc2.text[:500] + "..."
+            html = f'<html><head><style>.match-score{{font-size:24px;font-weight:bold;color:#488f31;}}.content{{padding:20px;}}</style></head><div class="content"><div><h4><b>Resume:</b> {resume_file.name}</h4></div><p>{resume_text}</p><div class="match-score">Match Score: {int(similarity*100)}%</div></div></html>'
             st.markdown(html, unsafe_allow_html=True)
 
         sorted_sim = sorted(similarities.items(), key=lambda x: x[1], reverse=True)
