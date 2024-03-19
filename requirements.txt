@@ -5,3 +5,4 @@ pydeck
 streamlit
 spacy==3.7.2
 pdfminer3==2018.12.3.0
+python -m spacy download en_core_web_md
