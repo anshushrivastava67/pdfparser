@@ -24,7 +24,7 @@ import io
 try:
         spacy.cli.download("en_core_web_md")
         print("Language model downloaded successfully.")
-    except Exception as e:
+except Exception as e:
         print(f"Error downloading language model: {e}")
 nlp = spacy.load('en_core_web_md')
 
