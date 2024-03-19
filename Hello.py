@@ -60,45 +60,42 @@ def run():
 
 
 
-import os
-name='<h2>Resume Matching</h2>'
-st.markdown(name, unsafe_allow_html=True)
-job_description_file = st.file_uploader("Upload Job Description PDF", type=["pdf"])
-
-resume_files = st.file_uploader("Upload Resume PDFs", type=["pdf"], accept_multiple_files=True)
-similarities={}
-
-a=pdf_reader(file_path)
-doc1 = nlp(job_description)
-doc2 = nlp(a)
-
-similarity = doc1.similarity(doc2) 
-similarities[file_name]=similarity
-
-html = '<html><head><style>.match-score{font-size:24px;font-weight:bold;color:#488f31;}.content{padding:20px;}</style></head><div class="content"><div><h4><b>Resume:</b>' + file_name + '</h4></div><p>' + a[:500] + '...</p><div class="match-score">Match Score: ' + str(int(similarity*100)) + '%</div></div></html>'
-st.markdown(html, unsafe_allow_html=True)
+        name='<h2>Resume Matching</h2>'
+        st.markdown(name, unsafe_allow_html=True)
+        job_description_file = st.file_uploader("Upload Job Description PDF", type=["pdf"])
+        
+        resume_files = st.file_uploader("Upload Resume PDFs", type=["pdf"], accept_multiple_files=True)
+        similarities={}
+        
+        a=pdf_reader(file_path)
+        doc1 = nlp(job_description)
+        doc2 = nlp(a)
+        
+        similarity = doc1.similarity(doc2) 
+        similarities[file_name]=similarity
+        
+        html = '<html><head><style>.match-score{font-size:24px;font-weight:bold;color:#488f31;}.content{padding:20px;}</style></head><div class="content"><div><h4><b>Resume:</b>' + file_name + '</h4></div><p>' + a[:500] + '...</p><div class="match-score">Match Score: ' + str(int(similarity*100)) + '%</div></div></html>'
+        st.markdown(html, unsafe_allow_html=True)
+        
+        sorted_sim = []
     
-    sorted_sim = []
-    
-    for k, v in similarities.items():
-      sorted_sim.append((v, k)) 
+        for k, v in similarities.items():
+              sorted_sim.append((v, k)) 
        
     
     #here ia m doing bubble sort in descending order
-    for i in range(len(sorted_sim)):
-      for j in range(len(sorted_sim)-i-1):
-       
-        if sorted_sim[j][0] < sorted_sim[j + 1][0]:
-          temp = sorted_sim[j]
-          sorted_sim[j]= sorted_sim[j + 1]
-          sorted_sim[j + 1]= temp
+        for i in range(len(sorted_sim)):
+              for j in range(len(sorted_sim)-i-1):
+                      if sorted_sim[j][0] < sorted_sim[j + 1][0]:
+                              temp = sorted_sim[j]
+                              sorted_sim[j]= sorted_sim[j + 1]
+                              sorted_sim[j + 1]= temp
+        rows = ""   
+        for score, file_path in sorted_sim:
+                rows += f"<tr><td>{file_path}</td><td>{score*100:.2f}%</td></tr>"
     
-    rows = ""   
-    for score, file_path in sorted_sim:
-        rows += f"<tr><td>{file_path}</td><td>{score*100:.2f}%</td></tr>"
-    
-    table_html = '<h2>Ranking Table</h2><table><tr><th>Resume</th><th>Match %</th></tr>'+rows+'</table> '
-    st.markdown(table_html, unsafe_allow_html=True)
+        table_html = '<h2>Ranking Table</h2><table><tr><th>Resume</th><th>Match %</th></tr>'+rows+'</table> '
+        st.markdown(table_html, unsafe_allow_html=True)
 
 
 if __name__ == "__main__":
