@@ -32,34 +32,31 @@ LOGGER = get_logger(__name__)
 
 
 def run():
-    st.set_page_config(
-        page_title="PDF Parser using spacy",
-        page_icon="👋",
-    )
+        st.set_page_config(
+                
+                page_title="PDF Parser using spacy",
+                page_icon="👋",
+        )
 
-    st.write("# PDF Parser 👋")
+        st.write("# PDF Parser 👋")
 
-    st.sidebar.success("Select a demo above.")
-
-    def pdf_reader(file):
-        resource_manager = PDFResourceManager()
-        string_io = io.StringIO()
-        converter = TextConverter(resource_manager, string_io, laparams=LAParams())
-        page_interpreter = PDFPageInterpreter(resource_manager, converter)
-        with open(file, 'rb') as fh:
-            for page in PDFPage.get_pages(fh,
-                                          caching=True,
-                                          check_extractable=True):
-                page_interpreter.process_page(page)
-                print(page)
-            text = string_io.getvalue()
-    
-        converter.close()
-        string_io.close()
-        return text
-
-
-
+        st.sidebar.success("Select a demo above.")
+        def pdf_reader(file):
+                resource_manager = PDFResourceManager()
+                string_io = io.StringIO()
+                converter = TextConverter(resource_manager, string_io, laparams=LAParams())
+                page_interpreter = PDFPageInterpreter(resource_manager, converter)
+                with open(file, 'rb') as fh:
+                    for page in PDFPage.get_pages(fh,
+                                                  caching=True,
+                                                  check_extractable=True):
+                        page_interpreter.process_page(page)
+                        print(page)
+                    text = string_io.getvalue()
+            
+                converter.close()
+                string_io.close()
+                return text
         name='<h2>Resume Matching</h2>'
         st.markdown(name, unsafe_allow_html=True)
         job_description_file = st.file_uploader("Upload Job Description PDF", type=["pdf"])
@@ -78,12 +75,12 @@ def run():
         st.markdown(html, unsafe_allow_html=True)
         
         sorted_sim = []
-    
+        
         for k, v in similarities.items():
               sorted_sim.append((v, k)) 
-       
-    
-    #here ia m doing bubble sort in descending order
+        
+        
+        #here ia m doing bubble sort in descending order
         for i in range(len(sorted_sim)):
               for j in range(len(sorted_sim)-i-1):
                       if sorted_sim[j][0] < sorted_sim[j + 1][0]:
@@ -93,7 +90,7 @@ def run():
         rows = ""   
         for score, file_path in sorted_sim:
                 rows += f"<tr><td>{file_path}</td><td>{score*100:.2f}%</td></tr>"
-    
+        
         table_html = '<h2>Ranking Table</h2><table><tr><th>Resume</th><th>Match %</th></tr>'+rows+'</table> '
         st.markdown(table_html, unsafe_allow_html=True)
 
