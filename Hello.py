@@ -41,10 +41,14 @@ def run():
         st.write("# PDF Parser")
 
         st.sidebar.success("Select a demo above.")
-        def preprocess_text(text):
+        def preprocess_text(text_bytes):
+                # Decode bytes to string
+                text = text_bytes.decode('utf-8')
+            
             # Remove newlines and excess whitespace
-            text = re.sub(r'\s+', ' ', text)
-            return text
+                text = re.sub(r'\s+', ' ', text)
+            
+                return text
         
         def pdf_reader(file):
                 
@@ -65,17 +69,17 @@ def run():
 
         if job_description_file and resume_files:
                 job_description_bytes = job_description_file.read()
-                job_description_text = preprocess_text(pdf_reader(job_description_bytes))
+                job_description_text = preprocess_text(job_description_bytes)
                 doc1 = nlp(job_description_text)
-
+        
                 similarities = {}
                 for resume_file in resume_files:
-                    resume_bytes = resume_file.read()
-                    resume_text = preprocess_text(pdf_reader(resume_bytes))
-                    doc2 = nlp(resume_text)
-                    similarity = doc1.similarity(doc2)
-                    similarities[resume_file.name] = similarity
-
+                        
+                        resume_bytes = resume_file.read()
+                        resume_text = preprocess_text(resume_bytes)
+                        doc2 = nlp(resume_text)
+                        similarity = doc1.similarity(doc2)
+                        similarities[resume_file.name] = similarity
         sorted_sim = sorted(similarities.items(), key=lambda x: x[1], reverse=True)
 
         rows = ""
