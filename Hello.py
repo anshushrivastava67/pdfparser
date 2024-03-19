@@ -61,7 +61,7 @@ def run():
         st.markdown(name, unsafe_allow_html=True)
         job_description_file = st.file_uploader("Upload Job Description PDF", type=["pdf"])
         
-        resume_files = st.file_uploader("Upload Resume PDFs", type=["pdf"], accept_multiple_files=True)
+        resume_files = st.file_uploader("Upload Resume PDFs", type=["pdf"])
         # html5='<html><head></head><body>' + resume_files + ' ' + len(resume_files) + '</body></html>'
         # st.markdown(html5, unsafe_allow_html=True)
         st.write("hello",resume_files)
