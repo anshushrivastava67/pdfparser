@@ -60,30 +60,30 @@ def run():
                 converter.close()
                 string_io.close()
                 return text
-                job_description_file = st.file_uploader("Upload Job Description PDF", type=["pdf"])
-                resume_files = st.file_uploader("Upload Resume PDFs", type=["pdf"], accept_multiple_files=True)
+        job_description_file = st.file_uploader("Upload Job Description PDF", type=["pdf"])
+        resume_files = st.file_uploader("Upload Resume PDFs", type=["pdf"], accept_multiple_files=True)
 
-                if job_description_file and resume_files:
-                        job_description_bytes = job_description_file.read()
-                        job_description_text = preprocess_text(pdf_reader(job_description_bytes))
-                        doc1 = nlp(job_description_text)
-        
-                        similarities = {}
-                        for resume_file in resume_files:
-                            resume_bytes = resume_file.read()
-                            resume_text = preprocess_text(pdf_reader(resume_bytes))
-                            doc2 = nlp(resume_text)
-                            similarity = doc1.similarity(doc2)
-                            similarities[resume_file.name] = similarity
+        if job_description_file and resume_files:
+                job_description_bytes = job_description_file.read()
+                job_description_text = preprocess_text(pdf_reader(job_description_bytes))
+                doc1 = nlp(job_description_text)
 
-                sorted_sim = sorted(similarities.items(), key=lambda x: x[1], reverse=True)
+                similarities = {}
+                for resume_file in resume_files:
+                    resume_bytes = resume_file.read()
+                    resume_text = preprocess_text(pdf_reader(resume_bytes))
+                    doc2 = nlp(resume_text)
+                    similarity = doc1.similarity(doc2)
+                    similarities[resume_file.name] = similarity
 
-                rows = ""
-                for file_path, score in sorted_sim:
-                        rows += f"<tr><td>{file_path}</td><td>{score*100:.2f}%</td></tr>"
+        sorted_sim = sorted(similarities.items(), key=lambda x: x[1], reverse=True)
 
-                table_html = '<h2>Ranking Table</h2><table><tr><th>Resume</th><th>Match %</th></tr>' + rows + '</table>'
-                st.markdown(table_html, unsafe_allow_html=True)
+        rows = ""
+        for file_path, score in sorted_sim:
+                rows += f"<tr><td>{file_path}</td><td>{score*100:.2f}%</td></tr>"
+
+        table_html = '<h2>Ranking Table</h2><table><tr><th>Resume</th><th>Match %</th></tr>' + rows + '</table>'
+        st.markdown(table_html, unsafe_allow_html=True)
 
 
 if __name__ == "__main__":
