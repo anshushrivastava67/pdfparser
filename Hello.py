@@ -64,7 +64,7 @@ def run():
         resume_files = st.file_uploader("Upload Resume PDFs", type=["pdf"], accept_multiple_files=True)
         similarities={}
         
-        a=pdf_reader(file_path)
+        a=pdf_reader(resume_files)
         doc1 = nlp(job_description)
         doc2 = nlp(a)
         
