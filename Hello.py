@@ -62,8 +62,9 @@ def run():
         job_description_file = st.file_uploader("Upload Job Description PDF", type=["pdf"])
         
         resume_files = st.file_uploader("Upload Resume PDFs", type=["pdf"], accept_multiple_files=True)
-        html5='<html><head></head><body>' + resume_files + ' ' + len(resume_files) + '</body></html>'
-        st.markdown(html5, unsafe_allow_html=True)
+        # html5='<html><head></head><body>' + resume_files + ' ' + len(resume_files) + '</body></html>'
+        # st.markdown(html5, unsafe_allow_html=True)
+        st.write("hello",resume_files)
        
         similarities={}
         
