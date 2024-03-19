@@ -36,10 +36,9 @@ def run():
         st.set_page_config(
                 
                 page_title="PDF Parser using spacy",
-                page_icon="👋",
         )
 
-        st.write("# PDF Parser 👋")
+        st.write("# PDF Parser")
 
         st.sidebar.success("Select a demo above.")
         def preprocess_text(text):
